@@ -31,11 +31,3 @@ elif(countString >= 5):
     print("File is malicious")
 else:
     print("File may be corrupted or otherwise not readable. Please try again!") 
-
-#if dangerousSubstring in mainString: 
-#    print("**** File is dangerous!")
-#else:
-#    print("*** File is safe! ****")
-#print(r2.text)
-#json_response = json.loads(Response.content)
-#print(json_response)
