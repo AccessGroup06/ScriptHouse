@@ -21,9 +21,22 @@ headers = {'x-apikey': api_key}
 
 # Sending request plus appending the base64 of the URL
 r = requests.get("https://www.virustotal.com/api/v3/urls/{}".format(str(base64_Url)),headers=headers)
-print(r.text)
+#print(r.text)
 
+findString = "malicious"
+mainString = r.text
 
+countString = mainString.count(findString)
+print("The URL is considered malicious by", countString, "antiviruses.")
+
+if(countString) <= 0: 
+    print("Not malicious")
+elif(1 > countString <= 3):
+    print("URL might be malicious")
+elif(countString >= 5):
+    print("URL is malicious")
+else:
+    print("URL unreachable. Please try again later!")
 
 # Example Test : https://www.csm-testcenter.org/download/malicious/index.html
 # https://developers.virustotal.com/reference#url-object (For detail information)
