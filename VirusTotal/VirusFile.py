@@ -1,35 +1,58 @@
-# Modules that we need for interacting with the virustotal api
+# @author Omar Hawwash, Aalborg University, Campus Copenhagen
+
+# Modules that we need for interacting with the VirusTotal API
 import requests, json, sys, os
 
 from requests.models import Response
 
+# The API key used by VirusTotal
 api_key = '57856d7e94768680c4d2378f9ecb8e4a2faa92889f55b42c487e5d1a982e5ab8'
+
+# The URL needed for file submission & other formalia regarding VirusTotal
 url= "https://www.virustotal.com/api/v3/files"
 headers = {'x-apikey': api_key}
-#filepath = sys.path.append(os.path.realpath('F:\\GIT\\Repos\\StudentTasks\\VirusTotal\\filestoScan\\1.exe'))
+
+# The full path to the file that you want to submit (REMEMBER TO CHANGE THE PATH)
+
 files = {'file': open('F:\\GIT\\Repos\\StudentTasks\\VirusTotal\\filestoScan\\1.exe','rb')}
+
+# Post the request to the VirusTotal API
 r = requests.post(url, files=files, headers=headers)
-#print(r.text)
-#print("Now, let's get the ID!")
+
+# Formatting the JSON query into a Python dictionary
 jsonformatted = json.loads(r.text)
-#print(jsonformatted["data"]["id"])
+
+# Retrieving the ID as a single variable from the JSON query
 idfromVT = jsonformatted["data"]["id"]
+
+# Appending the ID to the URL that will be sent to VirusTotal to retrieve analysis verdicts (concatenating the string of the URL + the ID)
 urltoVT = "https://www.virustotal.com/api/v3/analyses/" + idfromVT
+
+# This was for debugging reasons :-)
 #print(urltoVT)
+
+# Retrieve the info that relates to our specific file
 r2 = requests.get(urltoVT,headers=headers)
 
+# Print the full JSON response, which includes the assessments from all the AV's
 print(r2.text)
 
-#print("Hello and welcome to the VirusTotal API Tool!")
-#print("Through this tool you'll be able to submit a file in the filestoScan folder and check if the file is malicious.")
-#print("If the file is flagged as malicious by 1 to 3 AVs it's considered potentially malicious.")
-#print("If the file is flagged as malicious by 5 or more AVs, it's considered malicious.")
-#print("Otherwise, it's considered as 'not malicious'.")
+# RULES for assessment
+# If the file is flagged as malicious by 1 to 3 AVs it's considered potentially malicious.
+# If the file is flagged as malicious by 5 or more AVs, it IS considered malicious.
+# Otherwise, it's considered 'not malicious'.
 
+# This is to get the info from the AVs that specifically have flagged the files as malicious, so we can use it for the counter in the end.
 dangerousSubstring = "malicious"
+
+# This is the full string of the JSON response, turned into a 'String', so we can search in its substrings.
 mainString = r2.text
 
+# How many times have we seen the word malicious in the full JSON response?
 countString = mainString.count(dangerousSubstring)
+
+# Print the verdicts
+
 print("The file is considered malicious by", countString, "antiviruses.")
 
 if(countString) <= 0: 
