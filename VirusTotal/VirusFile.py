@@ -8,7 +8,7 @@ from requests.models import Response
 # The API key used by VirusTotal
 api_key = '57856d7e94768680c4d2378f9ecb8e4a2faa92889f55b42c487e5d1a982e5ab8'
 
-# The URL needed for file submission & other formalia regarding VirusTotal
+# The URL needed for file submission and other formalia regarding VirusTotal
 url= "https://www.virustotal.com/api/v3/files"
 headers = {'x-apikey': api_key}
 
@@ -37,29 +37,26 @@ r2 = requests.get(urltoVT,headers=headers)
 # Print the full JSON response, which includes the assessments from all the AV's
 print(r2.text)
 
+# Parse the JSON response including the assessments into Python so we can retrieve the malicious stat later.
+jsonformatted = json.loads(r2.text)
+
+# How many times have we seen the word malicious in the full JSON response? (Retrieve malicious 'stat')
+flaggedMalicious = jsonformatted["data"]["attributes"]["stats"]["malicious"]
+
 # RULES for assessment
 # If the file is flagged as malicious by 1 to 3 AVs it's considered potentially malicious.
 # If the file is flagged as malicious by 5 or more AVs, it IS considered malicious.
 # Otherwise, it's considered 'not malicious'.
 
-# This is to get the info from the AVs that specifically have flagged the files as malicious, so we can use it for the counter in the end.
-dangerousSubstring = "malicious"
-
-# This is the full string of the JSON response, turned into a 'String', so we can search in its substrings.
-mainString = r2.text
-
-# How many times have we seen the word malicious in the full JSON response?
-countString = mainString.count(dangerousSubstring)
-
 # Print the verdicts
 
-print("The file is considered malicious by", countString, "antiviruses.")
+print("The file is considered malicious by", flaggedMalicious, "antiviruses.")
 
-if(countString) <= 0: 
-    print("The file is not malicious")
-elif(1 > countString <= 3):
-    print("The file may be malicious")
-elif(countString >= 5):
-    print("The file is most likely malicious")
+if(flaggedMalicious) <= 0: 
+    print("The file is not malicious.")
+elif(1 > flaggedMalicious <= 3):
+    print("The file may be malicious.")
+elif(flaggedMalicious >= 5):
+    print("The file is most likely malicious.")
 else:
     print("File may be corrupted or otherwise not readable. Please try again!") 
