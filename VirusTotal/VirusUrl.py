@@ -23,17 +23,18 @@ headers = {'x-apikey': api_key}
 r = requests.get("https://www.virustotal.com/api/v3/urls/{}".format(str(base64_Url)),headers=headers)
 #print(r.text)
 
-findString = "malicious"
-mainString = r.text
+jsonformatted = json.loads(r.text)
+flaggedMalicious = jsonformatted["data"]["attributes"]["last_analysis_stats"]["malicious"]
+flaggedSuspicious = jsonformatted["data"]["attributes"]["last_analysis_stats"]["suspicious"]
+print(flaggedMalicious)
+# flaggedMalicious = mainString.count(findString)
+print("The URL is considered malicious by", flaggedMalicious, "antiviruses.")
 
-countString = mainString.count(findString)
-print("The URL is considered malicious by", countString, "antiviruses.")
-
-if(countString) <= 0: 
+if(flaggedMalicious) <= 0: 
     print("Not malicious")
-elif(1 > countString <= 3):
+elif(1 > flaggedMalicious <= 3):
     print("URL might be malicious")
-elif(countString >= 5):
+elif(flaggedMalicious >= 5):
     print("URL is malicious")
 else:
     print("URL unreachable. Please try again later!")

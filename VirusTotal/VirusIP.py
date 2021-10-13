@@ -40,13 +40,13 @@ checkCommunicatingFiles = "https://www.virustotal.com/api/v3/ip_addresses/" + ge
 r2 = requests.get((checkCommunicatingFiles), headers=headers)
 
 # Print all info on-screen (for debug purposes)
-#print(r2.text)
+print(r2.text)
 
 # Format the output so we can get the count of files VT reports its association with, and proceed to print it.
 
 jsonformatcmfiles = json.loads(r2.text)
 communicatingFiles = jsonformatcmfiles["meta"]["count"]
-#print(communicatingFiles)
+print(communicatingFiles)
 
 # Final prints as verdicts of the conducted research
 

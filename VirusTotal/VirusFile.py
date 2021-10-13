@@ -31,7 +31,7 @@ idfromVT = jsonformatted["data"]["id"]
 urltoVT = "https://www.virustotal.com/api/v3/analyses/" + idfromVT
 
 # This was for debugging reasons :-)
-#print(urltoVT)
+print(urltoVT)
 
 # Retrieve the info that relates to our specific file
 r2 = requests.get(urltoVT,headers=headers)
