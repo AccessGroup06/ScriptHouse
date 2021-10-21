@@ -14,7 +14,7 @@ def convertTuple(tup):
     st = ''.join(map(str, tup))
     return st
 
-# File input from user
+# File input from user with IP addresses separated by commas. Example file is provided in the same path as this file (see "ExampleInput.txt").
 # for the path - for example: (Windows: C:\Users\Username\folder - Linux: /home/username/folder)
 filepath = input("Please enter the FULL path to your file...")
 
@@ -24,18 +24,11 @@ scanThisIP = inputfile.readline()
 splits = scanThisIP.split(",")
 suffix = random.randint(0,9999)
 
-# Currently, this program writes to a file called OUTPUT.txt - to avoid redundancies, 
-# the program checks whether OUTPUT.txt exists - if it does, it is removed upon launch, and a new 
-# OUTPUT.txt file is made for this session.
+# Currently, this program writes to a file called OUTPUT-<random integer>.txt. You can check which one is the newest...
+# ... through the 'latest modified' metainfo on your OS for that file.
 
-# -- Currently working on finding a way to adding random integers / timestamps to the file name so multiple files can co-exist. /OH
-
-if os.path.exists("OUTPUT.txt"):
-    os.remove("OUTPUT.txt")
-    print("Cleaned! Deleted previous output file.")
-else: print("No output file exists yet.")
-
-filename = "OUTPUT.txt"
+tempfilename = "OUTPUT-", suffix, ".txt"
+filename = convertTuple(tempfilename)
 createoutputfile = open(filename, "x")
 outputfile = open(filename, "a")
 
@@ -50,12 +43,9 @@ for ip in splits:
     get_IP = currentIP
     iterator = iterator + 1
 
-# DEBUG
+# Which IP is it getting through? [DEBUG]
 #get_IP = scanThisIP
 #print(get_IP)
-
-# Retrieving user input for the IP that will be scanned in this iteration
-#get_IP = input("Enter IP address for Scanning... ")
 
 # API key for authentication with VirusTotal's API
     api_key='57856d7e94768680c4d2378f9ecb8e4a2faa92889f55b42c487e5d1a982e5ab8'
@@ -69,7 +59,7 @@ for ip in splits:
 # Sending request to the API with our IP address
     r = requests.get((urltoVT),headers=headers)
 
-# Print the result on-screen (for debug purposes)
+# Print the result on-screen [DEBUG]
     #print(r.text)
 
 # Load response from initial IP check into Python and parse JSON into FlaggedMalicious (how many times the IP is flagged as malicious) and FlaggedSuspicious
