@@ -1,6 +1,7 @@
 # @author Omar Hawwash, Aalborg University, Campus Copenhagen
 
-import base64, json, requests
+import base64, json, requests, random, os
+from datetime import datetime
 
 # ============================================================= #
 #  VirusTotal API - automation for IP addresses                 #
@@ -8,21 +9,48 @@ import base64, json, requests
 #    how it's been flagged                                      #
 # ============================================================= #
 
-# File input from user [TESTING]
+# This allows us to write tuple strings (so a string with, say, a number, into the file & is referenced when appending info to the file about comm. files, malicious & susp. flags)
+def convertTuple(tup):
+    st = ''.join(map(str, tup))
+    return st
+
+# File input from user
 # for the path - for example: (Windows: C:\Users\Username\folder - Linux: /home/username/folder)
 filepath = input("Please enter the FULL path to your file...")
 
+# Set input and output file parameters
 inputfile = open(filepath,'r')
 scanThisIP = inputfile.readline()
 splits = scanThisIP.split(",")
+suffix = random.randint(0,9999)
 
+# Currently, this program writes to a file called OUTPUT.txt - to avoid redundancies, 
+# the program checks whether OUTPUT.txt exists - if it does, it is removed upon launch, and a new 
+# OUTPUT.txt file is made for this session.
+
+# -- Currently working on finding a way to adding random integers / timestamps to the file name so multiple files can co-exist. /OH
+
+if os.path.exists("OUTPUT.txt"):
+    os.remove("OUTPUT.txt")
+    print("Cleaned! Deleted previous output file.")
+else: print("No output file exists yet.")
+
+filename = "OUTPUT.txt"
+createoutputfile = open(filename, "x")
+outputfile = open(filename, "a")
+
+# Iterator that reads through the file IP by IP and runs it through our scanner, then appends to file (in formatted manner)
 iterator = 0
 for ip in splits:
-    thisIP = splits[iterator]
-    print(thisIP)
-    get_IP = thisIP
+    currentIP = splits[iterator]
+    temp = "\n*** \nIP address: ", currentIP, "\n"
+    thisIP = convertTuple(temp)
+    outputfile.write(thisIP)
+    print(currentIP)
+    get_IP = currentIP
     iterator = iterator + 1
 
+# DEBUG
 #get_IP = scanThisIP
 #print(get_IP)
 
@@ -42,7 +70,7 @@ for ip in splits:
     r = requests.get((urltoVT),headers=headers)
 
 # Print the result on-screen (for debug purposes)
-#print(r.text)
+    #print(r.text)
 
 # Load response from initial IP check into Python and parse JSON into FlaggedMalicious (how many times the IP is flagged as malicious) and FlaggedSuspicious
 
@@ -58,7 +86,7 @@ for ip in splits:
     r2 = requests.get((checkCommunicatingFiles), headers=headers)
 
 # Print all info on-screen (for debug purposes)
-#print(r2.text)
+    #print(r2.text)
 
 # Format the output so we can get the count of files VT reports its association with, and proceed to print it.
 
@@ -66,14 +94,25 @@ for ip in splits:
     communicatingFiles = jsonformatcmfiles["meta"]["count"]
 #print(communicatingFiles)
 
-# Final prints as verdicts of the conducted research
+    # Final prints as verdicts of the conducted research
 
-    print("The IP address is communicating with", communicatingFiles, "files.")
 
-# Assumptious print: if the IP communicates with 100+ files, we warn the user it might be a botmaster
+    ipcomm = "\nThe IP address is communicating with ", communicatingFiles, " files."
+    str_ipcomm = convertTuple(ipcomm)
+    outputfile.write(str_ipcomm)
+    # Assumptious print: if the IP communicates with 100+ files, we warn the user it might be a botmaster
     if communicatingFiles > 100:
-        print("*** !WARNING! *** Since this IP is communicating with over 100 files, it might be the IP of a command-and-control center!")
+        warning = "\n*** !WARNING! *** Since this IP is communicating with over 100 files, it might be the IP of a command-and-control center!"
+        outputfile.write(warning)
 
-# Prints about malicious and suspicious flags
-    print("This IP was flagged as malicious:", flaggedMalicious, "times!")
-    print("This IP was flagged as suspicious:", flaggedSuspicious, "times!")
+    # Prints about malicious and suspicious flags
+    flagMalicious = "\nThis IP was flagged as malicious: ", flaggedMalicious, " times!"
+    str_flagmalicious = convertTuple(flagMalicious)
+    outputfile.write(str_flagmalicious)
+    flagSuspicious = "\nThis IP was flagged as suspicious: ", flaggedSuspicious, " times! \n"
+    str_flagsuspicious = convertTuple(flagSuspicious)
+    outputfile.write(str_flagsuspicious)
+
+# Close the file and print in the console that we're all done.
+outputfile.close()
+print("Done analyzing IP's!")
