@@ -12,9 +12,11 @@ api_key = '57856d7e94768680c4d2378f9ecb8e4a2faa92889f55b42c487e5d1a982e5ab8'
 url= "https://www.virustotal.com/api/v3/files"
 headers = {'x-apikey': api_key}
 
-# The full path to the file that you want to submit (REMEMBER TO CHANGE THE PATH)
+# The full path to the file that you want to submit - this is user input 
+# for the path - for example: (Windows: C:\Users\Username\folder - Linux: /home/username/folder)
+filepath = input("Please enter the FULL path to your file...")
 
-files = {'file': open('F:\\GIT\\Repos\\StudentTasks\\VirusTotal\\filestoScan\\1.exe','rb')}
+files = {'file': open(filepath,'rb')}
 
 # Post the request to the VirusTotal API
 r = requests.post(url, files=files, headers=headers)
@@ -29,7 +31,7 @@ idfromVT = jsonformatted["data"]["id"]
 urltoVT = "https://www.virustotal.com/api/v3/analyses/" + idfromVT
 
 # This was for debugging reasons :-)
-#print(urltoVT)
+print(urltoVT)
 
 # Retrieve the info that relates to our specific file
 r2 = requests.get(urltoVT,headers=headers)
