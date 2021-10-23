@@ -1,5 +1,3 @@
-# @author Omar Hawwash, Aalborg University, Campus Copenhagen
-
 # Modules that we need for interacting with the VirusTotal API
 import requests, json, sys, os
 
