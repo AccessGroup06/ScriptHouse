@@ -1,5 +1,3 @@
-# @author Omar Hawwash, Aalborg University, Campus Copenhagen
-
 import base64, json, requests, random, os
 from datetime import datetime
 

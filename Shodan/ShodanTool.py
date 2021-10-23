@@ -1,5 +1,3 @@
-# @author Omar Hawwash, Aalborg University, Campus Copenhagen
-
 # This tool allows you to scan IP addresses on Shodan, as well as find IP addresses running on services, using Shodan's API.
 
 import shodan
