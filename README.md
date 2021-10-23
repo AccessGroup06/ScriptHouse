@@ -1,2 +1,2 @@
 # StudentTasks
-In progress....
+IT student tasks for Aalborg University.
