@@ -27,9 +27,7 @@ jsonformatted = json.loads(r.text)
 flaggedMalicious = jsonformatted["data"]["attributes"]["last_analysis_stats"]["malicious"]
 flaggedSuspicious = jsonformatted["data"]["attributes"]["last_analysis_stats"]["suspicious"]
 print(flaggedMalicious)
-
 # flaggedMalicious = mainString.count(findString)
-
 print("The URL is considered malicious by", flaggedMalicious, "antiviruses.")
 
 if(flaggedMalicious) <= 0: 
