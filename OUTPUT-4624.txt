@@ -1,0 +1,12 @@
+
+*** 
+IP address: 92.63.100.128
+
+The IP address is communicating with 200 files.
+*** !WARNING! *** Since this IP is communicating with over 100 files, it might be the IP of a command-and-control center!
+This IP was flagged as malicious: 1 times!
+This IP was flagged as suspicious: 0 times! 
+
+*** 
+IP address: 23.95.191.195
+
