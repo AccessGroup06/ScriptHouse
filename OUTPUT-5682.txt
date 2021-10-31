@@ -1,0 +1,34 @@
+
+*** 
+IP address: 92.63.100.128
+
+The info from KasperSky is the following:
+Category: harmless
+Result: clean
+Method: blacklist
+The IP address is communicating with 200 files.
+*** !WARNING! *** Since this IP is communicating with over 100 files, it might be the IP of a command-and-control center!
+This IP was flagged as malicious: 2 times!
+This IP was flagged as suspicious: 0 times! 
+
+*** 
+IP address: 62.68.154.60
+
+The info from KasperSky is the following:
+Category: harmless
+Result: clean
+Method: blacklist
+The IP address is communicating with 0 files.
+This IP was flagged as malicious: 0 times!
+This IP was flagged as suspicious: 0 times! 
+
+*** 
+IP address: 63.67.100.141
+
+The info from KasperSky is the following:
+Category: harmless
+Result: clean
+Method: blacklist
+The IP address is communicating with 0 files.
+This IP was flagged as malicious: 0 times!
+This IP was flagged as suspicious: 0 times! 
