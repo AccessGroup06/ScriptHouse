@@ -66,6 +66,18 @@ for ip in splits:
     flaggedMalicious = jsonformatted["data"]["attributes"]["last_analysis_stats"]["malicious"]
     flaggedSuspicious = jsonformatted["data"]["attributes"]["last_analysis_stats"]["suspicious"]
 
+    # Let's only get data from Kaspersky (or an AV of our choice) -- change the last part of the tuple if you want a different AV :) /OH
+    ourAntivirus = jsonformatted["data"]["attributes"]["last_analysis_results"]["Kaspersky"]
+
+    # Give us the category that our antivirus deems this to be:    
+    avfindingsCat = ourAntivirus["category"]
+
+    # Give us the result from this AV:
+    avfindingsResult = ourAntivirus["result"]
+
+    # Give us the method result from this AV:
+    avfindingsMethod = ourAntivirus["method"]
+
 # Now check for how many files the IP is communicating with
 
     checkCommunicatingFiles = "https://www.virustotal.com/api/v3/ip_addresses/" + get_IP + "/communicating_files"
@@ -84,6 +96,27 @@ for ip in splits:
 
     # Final prints as verdicts of the conducted research
 
+    # Prepare to print findings from the AV of our choise
+    ourAntivirusPrint = "\nThe info from your antivirus is the following:"
+    ourAntivirusPrintCat = "\nCategory: ", avfindingsCat
+    ourAntivirusPrintResult = "\nResult: ", avfindingsResult
+    ourAntivirusPrintMethod = "\nMethod: ", avfindingsMethod
+
+    # Print meta
+    str_av = convertTuple(ourAntivirusPrint)
+    outputfile.write(str_av)
+
+    # Print category
+    str_avc = convertTuple(ourAntivirusPrintCat)
+    outputfile.write(str_avc)
+
+    # Print result
+    str_avr = convertTuple(ourAntivirusPrintResult)
+    outputfile.write(str_avr)
+
+    # Print method
+    str_avm = convertTuple(ourAntivirusPrintMethod)
+    outputfile.write(str_avm)
 
     ipcomm = "\nThe IP address is communicating with ", communicatingFiles, " files."
     str_ipcomm = convertTuple(ipcomm)
