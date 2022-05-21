@@ -46,7 +46,7 @@ for ip in splits:
 #print(get_IP)
 
 # API key for authentication with VirusTotal's API
-    api_key='57856d7e94768680c4d2378f9ecb8e4a2faa92889f55b42c487e5d1a982e5ab8'
+    api_key='<YOUR API KEY GOES HERE>'
 
 # Required header for the GET request
     headers = {'x-apikey': api_key}
