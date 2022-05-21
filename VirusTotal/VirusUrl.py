@@ -14,7 +14,7 @@ url_id = base64.urlsafe_b64encode("{}".format(get_url).encode()).decode().strip(
 base64_Url = url_id
 
 # Api key for authentication with vt api
-api_key='57856d7e94768680c4d2378f9ecb8e4a2faa92889f55b42c487e5d1a982e5ab8'
+api_key='<YOUR API KEY GOES HERE>'
 
 # Required header for the GET reqest
 headers = {'x-apikey': api_key}
